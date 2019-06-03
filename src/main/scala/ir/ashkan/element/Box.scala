@@ -16,8 +16,10 @@ class Box(val decorations: Box.Decoration) extends Element.Decorator {
   }
 }
 
-
 object Box {
+  val right = '\u2571'
+  val left = '\u2572'
+
   class Position
 
   val topLeft = new Position
@@ -29,9 +31,7 @@ object Box {
 
   type Decoration = Map[Position, Char]
 
-  val corners: Set[Position] = Set(topLeft, topRight, bottomLeft, bottomRight)
-  val edges: Set[Position] = Set(verticalEdge, horizontalEdge)
-  val positions: Set[Position] = corners ++ edges
+  val undecorated: Decoration = Map.empty[Position, Char]
 
   private val squareCorner: Decoration = Map(
     topLeft -> '\u250c',
@@ -58,11 +58,14 @@ object Box {
     bottomRight -> '\u251B',
   )
   private val solidThin: Decoration = Map(horizontalEdge -> '\u2500', verticalEdge -> '\u2502')
+  private val solidThick: Decoration = Map(horizontalEdge -> '\u2501', verticalEdge -> '\u2503')
+  private val solidDouble: Decoration = Map(horizontalEdge -> '\u2550', verticalEdge -> '\u2551')
   private val dotted3Thin: Decoration = Map(verticalEdge -> '\u250A', horizontalEdge -> '\u2508')
+  private val dotted3Thick: Decoration = Map(verticalEdge -> '\u250B', horizontalEdge -> '\u2509')
   private val dotted2Thin: Decoration = Map(verticalEdge -> '\u2506', horizontalEdge -> '\u2504')
+  private val dotted2Thick: Decoration = Map(verticalEdge -> '\u2507', horizontalEdge -> '\u2505')
   private val dotted1Thin: Decoration = Map(verticalEdge -> '\u254E', horizontalEdge -> '\u254C')
-  private val double: Decoration = Map(horizontalEdge -> '\u2550', verticalEdge -> '\u2551')
-  private val thick: Decoration = Map(horizontalEdge -> '\u2501', verticalEdge -> '\u2503')
+  private val dotted1Thick: Decoration = Map(verticalEdge -> '\u254F', horizontalEdge -> '\u254D')
 
   object Single extends Box(solidThin ++ squareCorner)
 
@@ -72,16 +75,15 @@ object Box {
 
   object Dotted1Thin extends Box(squareCorner ++ dotted1Thin)
 
-  object Thick extends Box(thick ++ thickCorner)
+  object Thick extends Box(solidThick ++ thickCorner)
 
-  object Dotted3Thick extends Box(thickCorner ++ dotted3Thin)
+  object Dotted3Thick extends Box(thickCorner ++ dotted3Thick)
 
-  object Dotted2Thick extends Box(thickCorner ++ dotted2Thin)
+  object Dotted2Thick extends Box(thickCorner ++ dotted2Thick)
 
-  object Dotted1Thick extends Box(thickCorner ++ dotted1Thin)
+  object Dotted1Thick extends Box(thickCorner ++ dotted1Thick)
 
-  object Double extends Box(double ++ doubleCorner)
-
+  object Double extends Box(solidDouble ++ doubleCorner)
 
   object Round extends Box(solidThin ++ roundCorners)
 
