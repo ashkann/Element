@@ -1,35 +1,49 @@
 package ir.ashkan.element
 
 object Main extends App {
-  implicit def fromChar(ch: Char): Element = Element(ch)
-
-  //  val ashV = ('A' above 's' above 'h') beside ('A' above 's' above 'h') beside ('A' above 's' above 'h')
-  val ashH = Element("Ashkan") above Element("Yasman") above Element("Grandma")
+  val e = Element("Ashkan") above Element("Yasman") above Element("Grandma")
   val yasaman = Element("Yasaman")
 
+  println(
+    Box.Round(e) beside
+      Box.Single(e) beside
+      Box.Double(e) beside
+      Box.Thick(e) beside
+      Box.Dotted3Thin(e) beside
+      Box.Dotted2Thin(e) beside
+      Box.Dotted1Thin(e) beside
+      Box.Dotted3Thick(e) beside
+      Box.Dotted2Thick(e) beside
+      Box.Dotted1Thick(e) beside
+      Box.RoundDotted(e)
+  )
+
+  def x(s: String): Seq[Element] = s.map(Element(_))
+
+
+  //  class InverseStringElement(content:String) extends Element {
+  //    override val content: Array[String] =
+  //    override val width: Int = 1
+  //  }
 
   println(
-    Box.Round(ashH) beside
-      Box.Single(ashH) beside
-      Box.Double(ashH) beside
-      Box.Thick(ashH) beside
-      Box.Dotted3Thin(ashH) beside
-      Box.Dotted2Thin(ashH) beside
-      Box.Dotted1Thin(ashH) beside
-      Box.Dotted3Thick(ashH) beside
-      Box.Dotted2Thick(ashH) beside
-      Box.Dotted1Thick(ashH) beside
-      Box.RoundDotted(ashH)
+    Box.Single(e).mapContent(_.map(_ + "*")) beside
+      Box.Double(e).mapContentWithIndex((s, n) => s"${n + 1}: $s") beside
+      Box.Round(e).map(Transformation.Transpose)
   )
 
   //   joins
 
-  import Box2.Implicits._
-  println(
-    Box2.Double(ashH).above(Box2.Round(ashH)) beside
-    (Box2.Double(ashH) above Box2.Double(ashH)) /*beside
-    //      (Box2.Double(ashH) above Box2.Round(ashH))*/
-  )
+  //  println(
+  //    LegoBox.above[LegoBox.Double.type ,LegoBox.Double.type,LegoBox.Double.type](LegoBox.Double(ashH),LegoBox.Double(ashH)),
+  //    LegoBox.above[LegoBox.Double.type,LegoBox.Round.type,LegoBox.Round.type](LegoBox.Double(ashH),LegoBox.Round(ashH)) // type error
+  //  )
+  //  import LegoBox.Implicits._
+  //  println(
+  //    LegoBox.Double(ashH).above(LegoBox.Round(ashH)) beside
+  //    (LegoBox.Double(ashH) above LegoBox.Double(ashH)) /*beside
+  //    //      (Box2.Double(ashH) above Box2.Round(ashH))*/
+  //  )
 
   //  println(Box2.Round(ashH).above(Box2.Round(ashH)) beside Box2.Round(ashH).above(Box2.Round(ashH)))
 

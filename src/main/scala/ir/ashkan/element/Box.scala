@@ -2,20 +2,6 @@ package ir.ashkan.element
 
 import scala.language.implicitConversions
 
-class Box(val decorations: Box.Decoration) extends Element.Decorator {
-
-  def apply(content: Element): Element = {
-    implicit def toElement(ch: Char): Element = Element(ch)
-
-    val hEdge = Element(decorations(Box.horizontalEdge), content.width, 1)
-    val vEdge = Element(decorations(Box.verticalEdge), 1, content.height)
-
-    (decorations(Box.topLeft) beside hEdge beside decorations(Box.topRight)) above
-      (vEdge beside content beside vEdge) above
-      (decorations(Box.bottomLeft) beside hEdge beside decorations(Box.bottomRight))
-  }
-}
-
 object Box {
   val right = '\u2571'
   val left = '\u2572'
@@ -67,26 +53,36 @@ object Box {
   private val dotted1Thin: Decoration = Map(verticalEdge -> '\u254E', horizontalEdge -> '\u254C')
   private val dotted1Thick: Decoration = Map(verticalEdge -> '\u254F', horizontalEdge -> '\u254D')
 
-  object Single extends Box(solidThin ++ squareCorner)
+  object Single extends LazyDecorator(solidThin ++ squareCorner)
 
-  object Dotted3Thin extends Box(squareCorner ++ dotted3Thin)
+  object Dotted3Thin extends LazyDecorator(squareCorner ++ dotted3Thin)
 
-  object Dotted2Thin extends Box(squareCorner ++ dotted2Thin)
+  object Dotted2Thin extends LazyDecorator(squareCorner ++ dotted2Thin)
 
-  object Dotted1Thin extends Box(squareCorner ++ dotted1Thin)
+  object Dotted1Thin extends LazyDecorator(squareCorner ++ dotted1Thin)
 
-  object Thick extends Box(solidThick ++ thickCorner)
+  object Thick extends LazyDecorator(solidThick ++ thickCorner)
 
-  object Dotted3Thick extends Box(thickCorner ++ dotted3Thick)
+  object Dotted3Thick extends LazyDecorator(thickCorner ++ dotted3Thick)
 
-  object Dotted2Thick extends Box(thickCorner ++ dotted2Thick)
+  object Dotted2Thick extends LazyDecorator(thickCorner ++ dotted2Thick)
 
-  object Dotted1Thick extends Box(thickCorner ++ dotted1Thick)
+  object Dotted1Thick extends LazyDecorator(thickCorner ++ dotted1Thick)
 
-  object Double extends Box(solidDouble ++ doubleCorner)
+  object Double extends LazyDecorator(solidDouble ++ doubleCorner)
 
-  object Round extends Box(solidThin ++ roundCorners)
+  object Round extends LazyDecorator(solidThin ++ roundCorners)
 
-  object RoundDotted extends Box(roundCorners ++ dotted2Thin)
+  object RoundDotted extends LazyDecorator(roundCorners ++ dotted2Thin)
 
+  private implicit def decorator(decorations: Decoration): Decorator = e => {
+    implicit def toElement(ch: Char): Element = Element(ch)
+
+    val hEdge = Element(decorations(Box.horizontalEdge), e.width, 1)
+    val vEdge = Element(decorations(Box.verticalEdge), 1, e.height)
+
+    (decorations(Box.topLeft) beside hEdge beside decorations(Box.topRight)) above
+      (vEdge beside e beside vEdge) above
+      (decorations(Box.bottomLeft) beside hEdge beside decorations(Box.bottomRight))
+  }
 }

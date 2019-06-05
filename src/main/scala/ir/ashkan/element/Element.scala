@@ -11,19 +11,13 @@ abstract class Element {
 
   def beside(that: Element): Element = Element.zip(this, that) { case (l, r) => this.pad(l) + that.pad(r) }
 
-  def map(f: String => String) = Element(content map f)
-
   private def pad(row: String) = row.padTo(width, Element.Space)
 
   override def toString: String = content mkString "\n"
 }
 
-
 object Element {
-  val empty: Element = this(Array.empty[String])
-
-  type Decorator = Element => Element
-  type Combinator = (Element, Element) => Element
+  val empty: Element = this (Array.empty[String])
 
   class BitmapElement(val content: Array[String]) extends Element {
     private[this] val _width = if (content.nonEmpty) content.map(_.length).max else 0
