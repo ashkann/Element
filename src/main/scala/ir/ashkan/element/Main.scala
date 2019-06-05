@@ -29,7 +29,9 @@ object Main extends App {
   println(
     Box.Single(e).mapContent(_.map(_ + "*")) beside
       Box.Double(e).mapContentWithIndex((s, n) => s"${n + 1}: $s") beside
-      Box.Round(e).map(Transformation.Transpose)
+      Box.Round(e).map(Transformation.Transpose) beside
+      Box.Round(e).map(Transformation.Transpose).map(Padding.Top(1)).map(Padding.Left(2)) beside
+      Box.Thick(e).map(Padding.Bottom(1)).map(Padding.Right(2))
   )
 
   //   joins

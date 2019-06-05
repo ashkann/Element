@@ -15,5 +15,5 @@ class Decorated(e: Element, d: Decorator) extends Element {
 
   def mapContentWithIndex(f: (String, Int) => String): Decorated = mapContent(_.zipWithIndex.map(f.tupled))
 
-  def mapContent(f:Array[String]=>Array[String]): Decorated = map(e=>Element(f(e.content)))
+  def mapContent(f: Array[String] => Array[String]): Decorated = map(e => Element(f(e.content)))
 }

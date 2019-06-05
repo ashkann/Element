@@ -13,6 +13,8 @@ abstract class Element {
 
   private def pad(row: String) = row.padTo(width, Element.Space)
 
+  def map2(f: String => String): Element = Element(content.map(f))
+
   override def toString: String = content mkString "\n"
 }
 
