@@ -1,5 +1,7 @@
 package ir.ashkan.element
 
+import ir.ashkan.element.Transformation.Transpose
+
 object Main extends App {
   val e = Element("Ashkan") above Element("Yasman") above Element("Grandma")
   val yasaman = Element("Yasaman")
@@ -29,9 +31,9 @@ object Main extends App {
   println(
     Box.Single(e).mapContent(_.map(_ + "*")) beside
       Box.Double(e).mapContentWithIndex((s, n) => s"${n + 1}: $s") beside
-      Box.Round(e).map(Transformation.Transpose) beside
-      Box.Round(e).map(Transformation.Transpose).map(Padding.Top(1)).map(Padding.Left(2)) beside
-      Box.Thick(e).map(Padding.Bottom(1)).map(Padding.Right(2))
+      Box.Round(e).map(Transpose) beside
+      Box.Thick(e).map(Padding.Bottom(1)).map(Padding.Right(2)) beside
+      Box.Round(e).map(Transpose andThen Padding.Top(1) andThen Padding.Left(2))
   )
 
   //   joins
